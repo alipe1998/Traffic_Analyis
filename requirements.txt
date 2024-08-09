@@ -1,0 +1,11 @@
+matplotlib
+contextily
+shapely
+scipy
+typing-extensions
+boto3
+scikit-learn
+numpy
+geopandas
+pandas
+-e .
