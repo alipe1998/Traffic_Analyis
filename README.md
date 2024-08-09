@@ -35,7 +35,7 @@ FINAL_PROJECT/
 │   └── test_spark_clustering.ipynb       <-- Notebook tests the functions and classes developed in spark_clustering.py
 ├── spark_batch_files/                    <-- Folder for all PySpark batch files used in the project
 │   ├── spark_batch_cluster_points.py     <-- Notebook divides the crash_data into subsets for easier local testing and development using pandas
-│   ├── test_spark_batch_cluster_points.py    <-- Notebook divides the crash_data into subsets for easier local testing and development using PySpark
+│   ├── test_spark_batch_cluster.ipynb    <-- Notebook divides the crash_data into subsets for easier local testing and development using PySpark
 ├── src/                                  <-- Folder contains all modules developed for the project
 │   ├── pandas_clustering.py              <-- Contains functions and classes used to get clusters using pandas DataFrame
 │   └── spark_clustering.py               <-- Contains functions and classes to group crashes into clusters using Spark RDD
