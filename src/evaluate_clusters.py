@@ -1,5 +1,5 @@
 from pathlib import Path
-import sys
+import os
 import warnings
 import pandas as pd
 import boto3
@@ -7,12 +7,9 @@ from io import StringIO
 from folium import Map, CircleMarker
 import matplotlib.colors as mcolors
 
-# get root directory of project
-ROOT_DIR = Path(__file__).resolve().parent.parent
-print(f"ROOT_DIR: {ROOT_DIR}")
-sys.path.append(str(ROOT_DIR))
-
-import config  # Import the config file containing AWS credentials
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+print(f"AWS_ACCESS_KEY_ID: {AWS_ACCESS_KEY_ID}")
 warnings.simplefilter(action='ignore', category=pd.errors.SettingWithCopyWarning)
 
 def read_csv_from_s3(s3_url: str) -> pd.DataFrame:
@@ -34,8 +31,8 @@ def read_csv_from_s3(s3_url: str) -> pd.DataFrame:
     # Initialize S3 client using credentials from config.py
     s3 = boto3.client(
         's3',
-        aws_access_key_id=config.aws_access_key_id,
-        aws_secret_access_key=config.aws_secret_access_key
+        aws_access_key_id=AWS_ACCESS_KEY_ID,
+        aws_secret_access_key=AWS_SECRET_ACCESS_KEY
     )
 
     # List objects within the specified S3 bucket and prefix
