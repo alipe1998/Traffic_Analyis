@@ -1,5 +1,6 @@
 import pandas as pd
 import sys
+import os
 from pathlib import Path
 import geopandas as gpd
 import matplotlib.pyplot as plt
@@ -17,11 +18,11 @@ import boto3
 ROOT_DIR = Path(__file__).resolve().parent.parent
 sys.path.append(str(ROOT_DIR))
 
-import config
-
 DATA_DIR = ROOT_DIR / 'data' # get data directory of project
 
-BUCKET_NAME = 'txdot-crash-data' # bucket name for the location where crash data is stored in my s3 account
+# Configuration for AWS access keys
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
 
 def read_crash_data(s3_url: str) -> pd.DataFrame:
     '''
@@ -45,8 +46,8 @@ def read_crash_data(s3_url: str) -> pd.DataFrame:
     bucket_name, object_key = parse_s3_url(s3_url)
     # set key_id and secret_access_key in config file
     s3 = boto3.client('s3',
-                      aws_access_key_id=config.aws_access_key_id,
-                      aws_secret_access_key=config.aws_secret_access_key)
+                      aws_access_key_id=AWS_ACCESS_KEY_ID,
+                      aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
     # read in s3 object and return a pandas dataframe
     s3_object = s3.get_object(Bucket=bucket_name, Key=object_key) 
     file_content = s3_object['Body'].read().decode('utf-8') 
@@ -82,8 +83,8 @@ def create_region_csv(crash_data_df: pd.DataFrame, lat_bounds: Tuple[float, floa
     
     # set key_id and secret_access_key in config file
     s3 = boto3.client('s3',
-                      aws_access_key_id=config.aws_access_key_id,
-                      aws_secret_access_key=config.aws_secret_access_key)
+                      aws_access_key_id=AWS_ACCESS_KEY_ID,
+                      aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
     bucket_name = 'txdot-crash-data-rice'
     bucket_key = f"processed_pandas_data/{region_filename}"
     # save file in s3 bucket
@@ -109,8 +110,8 @@ def filter_by_year(df, year):
     filtered_df.to_csv(csv_buffer, index=False)
     # Set up the S3 client with provided credentials
     s3 = boto3.client('s3',
-                      aws_access_key_id=config.aws_access_key_id,
-                      aws_secret_access_key=config.aws_secret_access_key)
+                      aws_access_key_id=AWS_ACCESS_KEY_ID,
+                      aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
     bucket_name = 'txdot-crash-data-rice'
     bucket_key = f"processed_pandas_data/crash_data_{year}"
 

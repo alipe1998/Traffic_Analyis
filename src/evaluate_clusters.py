@@ -1,15 +1,23 @@
 from pathlib import Path
 import os
+import sys
 import warnings
 import pandas as pd
 import boto3
 from io import StringIO
 from folium import Map, CircleMarker
 import matplotlib.colors as mcolors
+from IPython.display import display
+
+# get root directory of project
+ROOT_DIR = Path(__file__).resolve().parent.parent
+sys.path.append(str(ROOT_DIR))
+
+DATA_DIR = ROOT_DIR / 'data'
 
 AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
-print(f"AWS_ACCESS_KEY_ID: {AWS_ACCESS_KEY_ID}")
+
 warnings.simplefilter(action='ignore', category=pd.errors.SettingWithCopyWarning)
 
 def read_csv_from_s3(s3_url: str) -> pd.DataFrame:
@@ -53,7 +61,7 @@ def read_csv_from_s3(s3_url: str) -> pd.DataFrame:
 
     return combined_df
 
-def plot_highest_fatality(crash_data_df: pd.DataFrame, rank: int, distance: int):
+def plot_highest_fatality(crash_data_df: pd.DataFrame, rank: int, distance: int, save_path: str = None):
     '''
     Finds the nth ranked fatality_rate cluster and uses the cluster_latitude and cluster_longitude
     to plot all clusters within one mile of the cluster centroid on a map, with colors ranging from
@@ -63,6 +71,7 @@ def plot_highest_fatality(crash_data_df: pd.DataFrame, rank: int, distance: int)
     - crash_data_df (pandas DataFrame): DataFrame containing crash data with centroid and fatality rates.
     - rank (int): The rank of the fatality_rate cluster to visualize.
     - distance (int): Select clusters that are located within n mile(s) of the specified cluster centroid
+    - save_plot (str): If a path is specified then the plot is saved in the specified directory.
     '''
     # Sort clusters by fatality_rate in descending order
     sorted_df = crash_data_df.sort_values(by='fatality_rate', ascending=False).reset_index(drop=True)
@@ -71,6 +80,7 @@ def plot_highest_fatality(crash_data_df: pd.DataFrame, rank: int, distance: int)
     nth_cluster = sorted_df.iloc[rank - 1]
     centroid_lat = nth_cluster['centroid_latitude']
     centroid_lon = nth_cluster['centroid_longitude']
+    print(f"Fatality Rate: {round(nth_cluster['fatality_rate'], 2)}")
 
     # Calculate distance from nth cluster to all clusters
     crash_data_df['distance'] = ((crash_data_df['centroid_latitude'] - centroid_lat)**2 +
@@ -99,6 +109,12 @@ def plot_highest_fatality(crash_data_df: pd.DataFrame, rank: int, distance: int)
             fill=True,
             fill_opacity=0.7
         ).add_to(folium_map)
+    
+    if save_path:
+        file_path = Path(save_path)
+        folium_map.save(file_path / f"high_fatality_clusters_{rank}.html")  # Save the map as an HTML file
+    # Display the map
+    display(folium_map)
 
     return folium_map
 

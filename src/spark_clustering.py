@@ -1,34 +1,18 @@
-from pathlib import Path
+import os
 import matplotlib.pyplot as plt
 import contextily as ctx
 from shapely.geometry import Point
 from typing import Tuple
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, avg, sum as sql_sum, count as sql_count
-from pyspark.sql.types import StructType, StructField, StringType
 from pyspark.ml.feature import VectorAssembler
 from pyspark.ml.clustering import KMeans, GaussianMixture
 import geopandas as gpd
-import config
 import pyspark
 
-# Configuration for AWS access keys (recommended to use environment variables)
-AWS_ACCESS_KEY_ID = config.aws_access_key_id
-AWS_SECRET_ACCESS_KEY = config.aws_secret_access_key
-
-'''
-# Initialize Spark session
-spark = SparkSession.builder \
-    .appName("CrashDataClustering") \
-    .config("spark.jars.packages", "org.apache.hadoop:hadoop-aws:3.3.1") \
-    .config("spark.hadoop.fs.s3a.access.key", AWS_ACCESS_KEY_ID) \
-    .config("spark.hadoop.fs.s3a.secret.key", AWS_SECRET_ACCESS_KEY) \
-    .config("spark.hadoop.fs.s3a.endpoint", "s3.amazonaws.com") \
-    .getOrCreate()
-
-# Set logging level to reduce verbosity
-spark.sparkContext.setLogLevel("ERROR")
-'''
+# Configuration for AWS access keys
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
 
 def read_crash_data(spark: SparkSession, s3_url: str):
     '''

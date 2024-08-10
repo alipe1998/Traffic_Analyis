@@ -1,4 +1,5 @@
 from pathlib import Path
+import os
 import sys
 from pyspark import SparkContext, SparkConf
 from pyspark.sql import SparkSession
@@ -8,22 +9,20 @@ sys.path.append(str(Path.cwd().parent))
 
 # Import the function from the updated script
 from src.spark_clustering import load_and_process_crash_data
-import config
-# Configuration for AWS access keys (recommended to use environment variables)
-AWS_ACCESS_KEY_ID = config.aws_access_key_id
-AWS_SECRET_ACCESS_KEY = config.aws_secret_access_key
+
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
 
 from pyspark import SparkContext, SparkConf
 from pyspark.sql import SparkSession
-import config
 
 # Initialize Spark session with AWS credentials
 conf = SparkConf() \
     .setAppName("CrashDataProcessor") \
     .set("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem") \
     .set("spark.hadoop.fs.s3a.endpoint", "s3.amazonaws.com") \
-    .set("spark.hadoop.fs.s3a.access.key", config.aws_access_key_id) \
-    .set("spark.hadoop.fs.s3a.secret.key", config.aws_secret_access_key) \
+    .set("spark.hadoop.fs.s3a.access.key", AWS_ACCESS_KEY_ID) \
+    .set("spark.hadoop.fs.s3a.secret.key", AWS_SECRET_ACCESS_KEY) \
     .set("spark.hadoop.fs.s3a.aws.credentials.provider", "org.apache.hadoop.fs.s3a.SimpleAWSCredentialsProvider") \
     .set("spark.jars.packages", "org.apache.hadoop:hadoop-aws:3.3.1")
 
@@ -39,20 +38,11 @@ spark.sparkContext.setLogLevel("ERROR")
 
 def run():
     S3_OUTPUT_PATH = 's3a://public-crash-data/clean-data/'
-    
     # S3 URL for the input data
     s3_url = 's3a://public-crash-data/raw-data/combined_cleaned_group_crash.csv'
-    
-    # Load and process crash data
+    # load and process kmeans model
     crash_data_object = load_and_process_crash_data(spark, s3_url)
-    
-    # Assemble features for clustering
     crash_data_object.assemble_features()
-    
-    # Display the DataFrame schema and some data
-    crash_data_object.regions_df.show()
-    crash_data_object.regions_df.printSchema()
-    
     # Run KMeans clustering
     crash_data_clustered = crash_data_object.KMeans_model()
     
