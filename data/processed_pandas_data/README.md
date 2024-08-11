@@ -1,1 +1,1 @@
-This subdirectory will contain small subregions in Texas used for local testing and development during traffic analysis.
+This subdirectory will contain small subregions in Texas used for local testing and development during traffic analysis. Data will populate in this subdirectory when `create_regions_pandas.ipynb` notebook is run.
