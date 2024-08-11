@@ -16,6 +16,8 @@ There is a `requirements.txt` which is used to install all necessary dependencie
 
 Next open `config.py` and configure the s3 urls to where you have the crash data stored. 
 
+Finally add your AWS Access Key ID and AWS Secret Access Key in your environments variables called `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` respectively.
+
 ## Data
 
 The data was collected from the TXDOT CRIS database that contains records crashes in the state of Texas from 2014-2024. The data used for this project contains all crashes from 2024 to 2019. The data is stored in private s3 buckets as csv files. You may request the TXDOT crash data from the [CRIS Bulk Request Page](https://www.txdot.gov/apps-cg/crash_records/form.htm).
