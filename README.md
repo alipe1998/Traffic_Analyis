@@ -75,7 +75,7 @@ FINAL_PROJECT/
 │   └── test_spark_clustering.ipynb       <-- Notebook tests the functions and classes developed in spark_clustering.py
 ├── spark_batch_files/                    <-- Folder for all PySpark batch files used in the project
 │   ├── spark_batch_cluster_points.py     <-- spark batch file that was submitted to the EMR cluster 
-│   ├── test_spark_batch_cluster.ipynb    <-- Notebook that test the spark batch file on a small subset of the larger dataset
+│   └── test_spark_batch_cluster.ipynb    <-- Notebook that test the spark batch file on a small subset of the larger dataset
 ├── src/                                  <-- Folder contains all modules developed for the project
 │   ├── pandas_clustering.py              <-- Contains functions and classes used to get clusters using pandas DataFrame
 │   ├── evaluate_clusters.py              <-- Contains functions used to evaluate the results of the Big Data Analysis in the EMR cluster
