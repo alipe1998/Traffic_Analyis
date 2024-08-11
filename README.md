@@ -18,6 +18,8 @@ Next open `config.py` and configure the s3 urls to where you have the crash data
 
 Finally add your AWS Access Key ID and AWS Secret Access Key in your environments variables called `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` respectively.
 
+Finally configurations for the EMR Cluster can be found in the `emr_cluster.sh` file. You must add the `install_requirements.sh` file in the bootstrap actions section during configuration of the EMR Cluster.
+
 ## Data
 
 The data was collected from the TXDOT CRIS database that contains records crashes in the state of Texas from 2014-2024. The data used for this project contains all crashes from 2024 to 2019. The data is stored in private s3 buckets as csv files. You may request the TXDOT crash data from the [CRIS Bulk Request Page](https://www.txdot.gov/apps-cg/crash_records/form.htm).
