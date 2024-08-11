@@ -66,7 +66,7 @@ FINAL_PROJECT/
 │   └── processed_spark_data/             <-- Folder contains all CSV files used for local testing and development in spark.sql.DataFrames
 ├── plots/ 
 │   ├── fatality_plots/                   <-- Folder contains plots of the top five most dangerous cluster determined from KMeans algorithm
-│   └── small_clustering_plots            <-- Folder contains plots produced from clustering analysis of small regions
+│   └── small_clustering_plots/           <-- Folder contains plots produced from clustering analysis of small regions
 ├── notebooks/                            <-- Folder contains all Jupyter notebooks run in the project
 │   ├── create_regions_pandas.ipynb       <-- Notebook divides the crash_data into subsets for easier local testing and development using pandas
 │   ├── create_regions_spark.ipynb        <-- Notebook divides the crash_data into subsets for easier local testing and development using PySpark
