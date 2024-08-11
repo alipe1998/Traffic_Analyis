@@ -14,6 +14,8 @@ Docker Pull Command
 
 There is a `requirements.txt` which is used to install all necessary dependencies other than the pyspark dependencies
 
+Next open `config.py` and configure the s3 urls to where you have the crash data stored. 
+
 ## Data
 
 The data was collected from the TXDOT CRIS database that contains records crashes in the state of Texas from 2014-2024. The data used for this project contains all crashes from 2024 to 2019. The data is stored in private s3 buckets as csv files. You may request the TXDOT crash data from the [CRIS Bulk Request Page](https://www.txdot.gov/apps-cg/crash_records/form.htm).
@@ -75,5 +77,6 @@ FINAL_PROJECT/
 ├── requirements.txt                      <-- Inlcudes necessary dependencies to run file. Pyspark dependencies not inlcuded!
 ├── install_requirements.sh               <-- This sh file was submitted to the EMR cluster to install necessary python libraries. Pyspark dependencies are not included in this file.
 ├── emr_cluster.sh                        <-- This sh file is used to create the EMR cluster 
+├── config.py                             <-- configure paths to s3 buckets here
 └── README.md                             <-- README.md
 ```

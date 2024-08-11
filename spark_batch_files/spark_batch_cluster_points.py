@@ -9,6 +9,7 @@ sys.path.append(str(Path.cwd().parent))
 
 # Import the function from the updated script
 from src.spark_clustering import load_and_process_crash_data
+import config
 
 AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
@@ -37,11 +38,15 @@ spark.sparkContext.setLogLevel("ERROR")
 ################################## run batch file on data ##################################
 
 def run():
-    S3_OUTPUT_PATH = 's3a://public-crash-data/clean-data/'
-    # S3 URL for the input data
-    s3_url = 's3a://public-crash-data/raw-data/combined_cleaned_group_crash.csv'
+    #'s3a://public-crash-data/clean-data/'
+    S3_OUTPUT_PATH = config.S3_OUTPUT_DIR 
+    S3_OUTPUT_PATH_EDIT = S3_OUTPUT_PATH[:2] + 'a' + S3_OUTPUT_PATH[2:] # add an 'a' to the s3 url
+    #'s3a://public-crash-data/raw-data/combined_cleaned_group_crash.csv'
+    S3_INPUT_URL = config.S3_RAW_DATA_URL 
+    S3_INPUT_URL_EDIT = S3_INPUT_URL[:2] + 'a' + S3_INPUT_URL[2:] # add an 'a' to the s3 url
+    
     # load and process kmeans model
-    crash_data_object = load_and_process_crash_data(spark, s3_url)
+    crash_data_object = load_and_process_crash_data(spark, S3_INPUT_URL_EDIT)
     crash_data_object.assemble_features()
     # Run KMeans clustering
     crash_data_clustered = crash_data_object.KMeans_model()
@@ -50,7 +55,7 @@ def run():
     crash_data_clustered.compute_fatality_rate(
         cluster_col='kmeans_cluster',
         save_to_s3=True,
-        s3_path=S3_OUTPUT_PATH
+        s3_path=S3_OUTPUT_PATH_EDIT
     )
 
 run()
