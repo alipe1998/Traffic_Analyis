@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# This script creates an EMR cluster for crash data analysis
+# This script creates an EMR cluster for crash data analysis when run in AWS CLI.
 # Make sure to upload the install_requirements.sh file to your s3 bucket and update the s3 path in the bootstrap-actions below
 # before running the script.
 
