@@ -57,8 +57,10 @@ FINAL_PROJECT/
 ├── docs/
 │   ├── Part 1 Proposal.docx              <-- Part 1 proposal Word document
 │   ├── Part 1 Proposal.pdf               <-- Part 1 proposal PDF document
-│   ├── Part 2 Proposal.docx              <-- Part 2 proposal Word document
-│   └── Part 2 Proposal.pdf               <-- Part 2 proposal PDF document
+│   ├── Part 2 Final Project.docx         <-- Part 2 proposal Word document
+│   ├── Part 2 Final Project.pdf          <-- Part 2 proposal PDF document
+│   ├── Part 3 Final Project.docx         <-- Part 3 proposal Word document
+│   └── Part 3 Final Project.pdf          <-- Part 3 proposal PDF document
 ├── data/                                 <-- Folder contains all data used for local testing and development 
 │   ├── processed_pandas_data/            <-- Folder contains all CSV files used for local testing and development in pandas DataFrames
 │   └── processed_spark_data/             <-- Folder contains all CSV files used for local testing and development in spark.sql.DataFrames
